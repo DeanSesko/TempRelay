@@ -3,7 +3,7 @@ void ReadSQLRelayData(){
 ReadData++;
 if (ReadData >20) {
 ReadData =0;
-if (client.connect()) {
+ if (client.connect(server, 80)) {
     // Make a HTTP request:
     client.println("GET /cgi-bin/gettemps.pl");
     client.println();

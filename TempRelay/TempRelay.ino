@@ -30,7 +30,8 @@ byte ip[] = { 192, 168, 1, 177 };
 byte gateway[] = { 192, 168, 1, 254 };
 byte subnet[] = { 255, 255, 255, 0 };
 byte server[] = { 192, 168, 1, 230 }; 
-Client client(server, 80);
+EthernetClient client;
+
 OneWire  ow(4);
 
 byte Freezer[8] ={0x28, 0x9F, 0xA0, 0x7B, 0x02, 0x00, 0x00, 0xCB};

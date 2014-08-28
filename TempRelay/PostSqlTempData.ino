@@ -9,7 +9,7 @@ Serial.println(index);
  if (temp < 160){
    if (index > 45){ 
  
-  if (client.connect()) {
+ if (client.connect(server, 80)) {
        // Make a HTTP request:
       client.print(URLData);
    client.println(temp);
