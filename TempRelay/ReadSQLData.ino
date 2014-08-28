@@ -1,7 +1,7 @@
 void ReadSQLRelayData(){
 
 ReadData++;
-if (ReadData >20) {
+if (ReadData >10) {
 ReadData =0;
  if (client.connect(server, 80)) {
     // Make a HTTP request:
