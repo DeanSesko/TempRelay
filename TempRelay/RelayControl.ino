@@ -1,6 +1,6 @@
 void ChamberControl(float temp){
 if (Fermenting == 1 ){
-    if (temp < myHeaton) {
+    if (temp < myHeaton && temp > 33) {
       digitalWrite(RelayHeater, HIGH);
     }
      else if (temp > myHeatoff){
