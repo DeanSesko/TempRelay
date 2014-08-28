@@ -1,8 +1,8 @@
-void ReadTempData{
-  Serial.print(ReadData);
-Serial.println(" , Read Data");
+void ReadSQLRelayData(){
 
-if (ReadData > 20){
+ReadData++;
+if (ReadData >20) {
+ReadData =0;
 if (client.connect()) {
     // Make a HTTP request:
     client.println("GET /cgi-bin/gettemps.pl");
@@ -24,7 +24,6 @@ if (client.connect()) {
     
     }
 client.stop();
-
-ReadData=0;
 }
 
+}
