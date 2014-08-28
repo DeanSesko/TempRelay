@@ -27,12 +27,12 @@ SensorString="Beer";
 BeerPost=UpdateTempData(temp,URLData,BeerPost,SensorString);
 
 
-//ServerRoom
-tmp2 = getTemperature(ServerRoom);
+//FREEZER
+tmp2 = getTemperature(Freezer);
 temp = c2f(tmp2);
-URLData ="GET /cgi-bin/post.pl?S='ServerRoom'&T=";
-SensorString="ServerRoom";
-ServerRoomPost =UpdateTempData(temp,URLData,ServerRoomPost,SensorString);
+URLData ="GET /cgi-bin/post.pl?S='Freezer'&T=";
+SensorString="Freezer";
+FreezerPost =UpdateTempData(temp,URLData,FreezerPost,SensorString);
 
 
 
