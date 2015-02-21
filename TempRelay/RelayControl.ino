@@ -15,16 +15,5 @@ if (Fermenting == 1 ){
       }
     }
 
- if (Kegging == 1 ){
- 
-   if (temp >myCoolon){
-     digitalWrite(RelayCooling, HIGH);
-     digitalWrite(RelayHeater, LOW);
-     }
-   else if (temp < myCooloff){
-      digitalWrite(RelayCooling, LOW);
-      digitalWrite(RelayHeater, LOW);
- }
- }
 }
 
