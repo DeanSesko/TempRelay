@@ -9,14 +9,9 @@ void FermCheck(){
     myHeaton = SetTemp - .55;
     myHeatoff =SetTemp - .05;
   }
-
 else
   {
- Serial.println("Turning Fermenation Off");
-   
+ Serial.println("Turning Fermenation Off");  
      Fermenting =0;
   }
-  
-
-
 }
