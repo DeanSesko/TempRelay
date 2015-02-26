@@ -1,16 +1,17 @@
 void ChamberControl(float temp){
-if (Fermenting == 1 ){
-    if (temp < myHeaton && temp > 33) {
+  
+if(digitalRead(Fermswitch) ==HIGH){
+    if (temp < (SetTemp - .55) && temp > 33) {
       digitalWrite(RelayHeater, HIGH);
     }
-     else if (temp > myHeatoff){
+     else if (temp > (SetTemp - .05)){
        digitalWrite(RelayHeater, LOW);
       }
    
-   if (temp >myCoolon){
+   if (temp >(SetTemp + .55)){
      digitalWrite(RelayCooling, HIGH);
      }
-    if (temp < myCooloff){
+    if (temp < (SetTemp + .05)){
       digitalWrite(RelayCooling, LOW);
       }
     }

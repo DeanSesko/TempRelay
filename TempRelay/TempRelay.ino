@@ -5,11 +5,7 @@
 #include <String.h>
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
-#include "Adafruit_LEDBackpack.h"
-#include "Adafruit_GFX.h"
-
-//7 Segment
-Adafruit_AlphaNum4 alpha4 = Adafruit_AlphaNum4();
+#include <EEPROM.h>
 
 //LCD
 #define I2C_ADDR    0x27  
@@ -40,21 +36,15 @@ int TempSetup = 9;
 int Fermswitch =8;
 int RelayHeater = 7;
 int RelayCooling = 6;
-int Fermenting =0;
 OneWire  ow(2);
 int DownButton =5;
 int UpButton = 4;
-char charVal[10];               
-
-String stringVal = ""; 
+          
 int ClearLCD =0;
 
-//Fermentation  Temps
-float SetTemp = 77.00;
-float myCoolon ;
-float myCooloff;
-float myHeaton;
-float myHeatoff;
+//Fermentation  Temps read from EEPRON
+int SetTemp = EEPROM.read(0);
+
 int refrigeratorPost = 32; 
 int OutSidePost = 34;
 int BeerPost = 36;
@@ -65,7 +55,6 @@ int PostData = 15;
 String URLData="";
 String SensorString="";
 int TempIndex=0;
-String LCDString;
 
 //Production MAC Address 
 //byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
@@ -89,14 +78,10 @@ byte OutSide[8] ={0x28, 0xBE, 0x08, 0x81, 0x02, 0x00, 0x00, 0x2D};
 void setup(void) {
   //Setup Serial
   Serial.begin(57600);
-  alpha4.begin(0x70);  // pass in the address
-  alpha4.clear();
-  alpha4.writeDisplay();
   lcd.begin(20,4);        // 20 columns by 4 rows on display
   lcd.setBacklight(HIGH); // Turn on backlight, LOW for off
-  lcdSetup();
+  lcdSetupMain();
 
-  
   //Set initial States
   pinMode(RelayHeater, OUTPUT);   
   pinMode(RelayCooling, OUTPUT);  
@@ -104,14 +89,13 @@ void setup(void) {
   pinMode(UpButton,OUTPUT);  
   pinMode(DownButton,OUTPUT); 
   pinMode(TempSetup,OUTPUT);  
+  digitalWrite(Fermswitch, LOW); 
   digitalWrite(TempSetup, LOW); 
   digitalWrite(DownButton, LOW); 
   digitalWrite(UpButton, LOW);  
   digitalWrite(RelayHeater, LOW);   
   digitalWrite(RelayCooling, LOW);  
   Ethernet.begin(mac, ip, gateway, subnet);
-  dtostrf(SetTemp, 4, 2, charVal);  
-  ledprint(charVal);
   
 }
  
@@ -119,13 +103,7 @@ void loop(void) {
   if(digitalRead(TempSetup) ==HIGH) {
    if(ClearLCD == 0){
      ClearLCD =1;
-     lcd.clear();
-      lcd.setCursor ( 0, 0 );      
-      lcd.print("Setup Mode");
-      lcd.setCursor ( 0, 2 );           
-      lcd.print("Red = Temp UP");
-      lcd.setCursor ( 0, 3 );
-      lcd.print("Black = Temp Down");
+   lcdSetupMode();
        }
    
       Setup();
@@ -133,12 +111,13 @@ void loop(void) {
 
   else {
     if (ClearLCD ==1){
- lcdSetup();
-  ClearLCD =0;
+    lcdSetupMain();
+    ClearLCD =0;
+     EEPROM.write(0, SetTemp);
+
     }
     
   Serial.println("Start Loop");
-    FermCheck();
     PostTempData();
     ReadSQLRelayData();
     UpdateRelayData();
