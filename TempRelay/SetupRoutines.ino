@@ -1,13 +1,13 @@
 void lcdSetupMain(){
-  lcd.clear();
    lcd.setCursor ( 0, 0 );          
   lcd.print("Beer Temp");
   lcd.setCursor ( 0, 1 );  
   lcd.print("Chamber Temp");
   lcd.setCursor ( 0, 2 ); 
-  lcd.print("OutSide Temp"); 
-  lcd.setCursor ( 0, 3 ); 
   lcd.print("Server Temp ");
+  lcd.setCursor ( 0, 3 );
+  lcd.print("Fermenting is:"); 
+ 
   
   }
   

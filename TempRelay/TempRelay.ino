@@ -18,9 +18,9 @@
 #define D6_pin  6
 #define D7_pin  7
 
-LiquidCrystal_I2C lcd(I2C_ADDR,
-                      En_pin,Rw_pin,Rs_pin,D4_pin,D5_pin,D6_pin,D7_pin,
-                      BACKLIGHT_PIN, POSITIVE);
+LiquidCrystal_I2C lcd(I2C_ADDR,En_pin,Rw_pin,Rs_pin,D4_pin,D5_pin,D6_pin,D7_pin,BACKLIGHT_PIN, POSITIVE);
+
+
 
 
 //white Orange Stripe is for Heater ping 7
@@ -31,17 +31,17 @@ LiquidCrystal_I2C lcd(I2C_ADDR,
 //green cool goes to 6
 
 // PIN Setup
-
-int TempSetup = 9;
-int Fermswitch =8;
+int TempSetup = 9; //Green Stripe
+int Fermswitch =8; //Brown Stripe 
 int RelayHeater = 7;
 int RelayCooling = 6;
+int DownButton =5; //Blue Stripe
+int UpButton = 4; //Orange Stripe 
+// OneWire Pin
 OneWire  ow(2);
-int DownButton =5;
-int UpButton = 4;
+
           
 int ClearLCD =0;
-
 //Fermentation  Temps read from EEPRON
 int SetTemp = EEPROM.read(0);
 
@@ -103,7 +103,7 @@ void loop(void) {
   if(digitalRead(TempSetup) ==HIGH) {
    if(ClearLCD == 0){
      ClearLCD =1;
-   lcdSetupMode();
+     lcdSetupMode();
        }
    
       Setup();
@@ -111,13 +111,14 @@ void loop(void) {
 
   else {
     if (ClearLCD ==1){
-    lcdSetupMain();
-    ClearLCD =0;
+     ClearLCD =0;
+     lcd.clear();
      EEPROM.write(0, SetTemp);
 
     }
     
   Serial.println("Start Loop");
+    lcdSetupMain();
     PostTempData();
     ReadSQLRelayData();
     UpdateRelayData();
