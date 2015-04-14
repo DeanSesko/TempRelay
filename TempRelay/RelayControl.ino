@@ -3,7 +3,10 @@ void ChamberControl(float temp){
 if(digitalRead(Fermswitch) ==HIGH){
     lcd.setCursor ( 15, 3 );
     lcd.print("ON "); 
-  
+    if (temp < (SetTemp - 5 ) || temp > (SetTemp + 5)){
+      SendSMTPMessage(temp,"Beer",1);
+      
+    }
     if (temp < (SetTemp - .55) && temp > 33) {
       digitalWrite(RelayHeater, HIGH);
     }

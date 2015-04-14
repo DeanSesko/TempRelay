@@ -20,9 +20,6 @@
 
 LiquidCrystal_I2C lcd(I2C_ADDR,En_pin,Rw_pin,Rs_pin,D4_pin,D5_pin,D6_pin,D7_pin,BACKLIGHT_PIN, POSITIVE);
 
-
-
-
 //white Orange Stripe is for Heater ping 7
 //White Blue Stripe is for Cooling pin 6
 //Green is Ground 
@@ -40,7 +37,7 @@ int UpButton = 4; //Orange Stripe
 // OneWire Pin
 OneWire  ow(2);
 
-          
+int MailFaultSent=0;          
 int ClearLCD =0;
 //Fermentation  Temps read from EEPRON
 int SetTemp = EEPROM.read(0);
@@ -65,6 +62,8 @@ byte ip[] = { 192, 168, 1, 33 };
 byte gateway[] = { 192, 168, 1, 254 };
 byte subnet[] = { 255, 255, 255, 0 };
 byte server[] = { 192, 168, 1, 230 }; 
+byte SMTPserver[] = { 192,168,1,216 }; 
+
 EthernetClient client;
 
 
@@ -76,6 +75,8 @@ byte refrigerator[8] ={0x28, 0xDF, 0x7C, 0x7B, 0x02, 0x00, 0x00, 0xC1};
 byte OutSide[8] ={0x28, 0xBE, 0x08, 0x81, 0x02, 0x00, 0x00, 0x2D};
 
 void setup(void) {
+  Ethernet.begin(mac, ip, gateway, subnet);
+   //delay(5000);
   //Setup Serial
   Serial.begin(57600);
   lcd.begin(20,4);        // 20 columns by 4 rows on display
@@ -94,8 +95,9 @@ void setup(void) {
   digitalWrite(DownButton, LOW); 
   digitalWrite(UpButton, LOW);  
   digitalWrite(RelayHeater, LOW);   
-  digitalWrite(RelayCooling, LOW);  
-  Ethernet.begin(mac, ip, gateway, subnet);
+  digitalWrite(RelayCooling, LOW); 
+
+ 
   
 }
  
@@ -104,6 +106,7 @@ void loop(void) {
    if(ClearLCD == 0){
      ClearLCD =1;
      lcdSetupMode();
+     
        }
    
       Setup();
@@ -122,6 +125,7 @@ void loop(void) {
     PostTempData();
     ReadSQLRelayData();
     UpdateRelayData();
+    
     }
 }
 
