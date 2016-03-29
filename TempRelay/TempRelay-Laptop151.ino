@@ -1,3 +1,5 @@
+
+
 #include <SPI.h>
 #include <OneWire.h>
 #include <Ethernet.h>
@@ -123,6 +125,7 @@ void loop(void) {
   Serial.println("Start Loop");
     lcdSetupMain();
     PostTempData();
+    ReadSQLRelayData();
     UpdateRelayData();
     
     }
