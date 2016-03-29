@@ -1,24 +1,24 @@
 #include <SPI.h>
 #include <OneWire.h>
 #include <Ethernet.h>
-#include <Stdio.h>
-#include <String.h>
+//#include <Stdio.h>
+//#include <String.h>
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 #include <EEPROM.h>
 
 //LCD
-#define I2C_ADDR    0x27  
-#define BACKLIGHT_PIN 3
-#define En_pin  2
-#define Rw_pin  1
-#define Rs_pin  0
-#define D4_pin  4
-#define D5_pin  5
-#define D6_pin  6
-#define D7_pin  7
+//#define I2C_ADDR      
+//#define BACKLIGHT_PIN 3
+//#define En_pin  2
+//#define Rw_pin  1
+//#define Rs_pin  0
+//#define D4_pin  4
+//#define D5_pin  5
+//#define D6_pin  6
+//#define D7_pin  7
 
-LiquidCrystal_I2C lcd(I2C_ADDR,En_pin,Rw_pin,Rs_pin,D4_pin,D5_pin,D6_pin,D7_pin,BACKLIGHT_PIN, POSITIVE);
+LiquidCrystal_I2C lcd(0x27,2,1,0,4,5,6,7,3, POSITIVE);
 
 //white Orange Stripe is for Heater ping 7
 //White Blue Stripe is for Cooling pin 6
@@ -37,21 +37,14 @@ int UpButton = 4; //Orange Stripe
 // OneWire Pin
 OneWire  ow(2);
 
+int PostIndex=42;
 int MailFaultSent=0;          
 int ClearLCD =0;
 //Fermentation  Temps read from EEPRON
 int SetTemp = EEPROM.read(0);
-
-int refrigeratorPost = 32; 
-int OutSidePost = 34;
-int BeerPost = 36;
-int ServerRoomPost = 38;
-int ChamberPost = 40;
-int ReadData = 15;
 int PostData = 15;
-String URLData="";
 String SensorString="";
-int TempIndex=0;
+
 
 //Production MAC Address 
 //byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
@@ -62,7 +55,6 @@ byte ip[] = { 192, 168, 1, 33 };
 byte gateway[] = { 192, 168, 1, 254 };
 byte subnet[] = { 255, 255, 255, 0 };
 byte server[] = { 192, 168, 1, 230 }; 
-byte SMTPserver[] = { 192,168,1,216 }; 
 
 EthernetClient client;
 
@@ -72,7 +64,7 @@ byte ServerRoom[8] ={0x28, 0xB5, 0x0D, 0xCE, 0x03, 0x00, 0x00, 0xD6};
 byte Chamber[8] ={0x28, 0x51, 0xA1, 0x7B, 0x02, 0x00, 0x00, 0x8A};
 byte Beer[8] ={0x28, 0xCF, 0xA3, 0x7B, 0x02, 0x00, 0x00, 0xAB};
 byte refrigerator[8] ={0x28, 0xDF, 0x7C, 0x7B, 0x02, 0x00, 0x00, 0xC1};
-byte OutSide[8] ={0x28, 0xBE, 0x08, 0x81, 0x02, 0x00, 0x00, 0x2D};
+//byte OutSide[8] ={0x28, 0xBE, 0x08, 0x81, 0x02, 0x00, 0x00, 0x2D};
 
 void setup(void) {
   Ethernet.begin(mac, ip, gateway, subnet);
