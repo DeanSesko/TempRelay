@@ -18,6 +18,10 @@ temp = c2f(tmp2);
 URLData ="GET /cgi-bin/post.pl?S='Outside'&T=";
 SensorString="OutSide";
 OutSidePost =UpdateTempData(temp,URLData,OutSidePost,SensorString);
+if(digitalRead(Fermswitch) ==LOW){
+lcd.setCursor (15,0);        
+lcd.print(temp);
+}
 
 
 //BEER
@@ -26,8 +30,10 @@ temp = c2f(tmp2);
 ChamberControl(temp);
 URLData ="GET /cgi-bin/post.pl?S='Beer'&T=";
 SensorString="Beer";
+if(digitalRead(Fermswitch) ==HIGH){
 lcd.setCursor (15,0);        
 lcd.print(temp);
+}
 BeerPost=UpdateTempData(temp,URLData,BeerPost,SensorString);
 
 
